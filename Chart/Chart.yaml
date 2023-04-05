@@ -1,0 +1,15 @@
+apiVersion: v2
+name: helm-library
+description: A Helm chart for Kubernetes.
+
+keywords:
+- templates
+- helpers
+
+version: 0.1.0
+appVersion: "0.1.0"
+
+maintainers:
+  - name : Grigory Lantsov
+    email: lanercer@gmail.com
+    url: https://github.com/GrigoryLantsov/

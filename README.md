@@ -12,7 +12,7 @@ This chart provides a common template helpers
 dependencies:
   - name: helm-library
     version: 0.1.0
-    repository: https://github.com/GrigoryLantsov/helm-library/common
+    repository: https://grigorylantsov.github.io/helm-library/
 ```
 
 ```sh

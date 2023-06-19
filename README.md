@@ -46,8 +46,8 @@ nodeAffinityPreset:
   type: "soft"
   key: "kubernetes.io/hostname"
   values:
-    - ct-dev-kube-node-8
-    - ct-dev-kube-node-9
+    - node-1
+    - node-2
 
 # deployment.yaml
 {{- if .Values.affinity.enabled }}
@@ -70,9 +70,9 @@ apiVersion: {{ include "common.capabilities.ingress.apiVersion" . }}
 
 ```yaml
 # values.yaml
-registry: ct-prod-nexus.priv:4000
-repository: realty/backend/broker/mb-agent
-tag: dev.a376329e
+registry: registry
+repository: test
+tag: release-1
 pullPolicy: Always
 debug: false
 

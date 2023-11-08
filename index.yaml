@@ -2,10 +2,10 @@ apiVersion: v1
 entries:
   helm-library:
   - apiVersion: v2
-    appVersion: 0.1.0
-    created: "2023-04-05T15:55:58.298632598+03:00"
+    appVersion: 3.0.3
+    created: "2023-11-08T17:35:20.294782286+03:00"
     description: A Helm chart for Kubernetes.
-    digest: 465ca6b0f8a78d0ccbddadaa559fff4ab092d07273934c3335f4e095b46a28de
+    digest: 86e6b08e9ebc9abdfea7cf42937c3f3ca7b5d5987e2a7bad0d61a0d881dc24d8
     keywords:
     - templates
     - helpers
@@ -15,6 +15,28 @@ entries:
       url: https://github.com/GrigoryLantsov/
     name: helm-library
     urls:
-    - https://github.com/GrigoryLantsov/helm-library/raw/main/common/helm-library-0.1.0.tgz
-    version: 0.1.0
-generated: "2023-04-05T15:55:58.295301145+03:00"
+    - https://grigorylantsov.github.io/helm-library/common/helm-library-3.0.3.tgz
+    version: 3.0.3
+  node-app:
+  - apiVersion: v2
+    appVersion: 3.0.3
+    created: "2023-11-08T17:35:20.295905066+03:00"
+    dependencies:
+    - name: helm-library
+      repository: https://grigorylantsov.github.io/helm-library/
+      version: 3.0.3
+    description: A Helm chart for Kubernetes
+    digest: 7d7375b74797d1b7fc5faffe66e93e0e06974a4b65546b578bca4ec81d06a6d6
+    keywords:
+    - node
+    - javascript
+    - nodejs
+    maintainers:
+    - email: lanercer@gmail.com
+      name: Grigory Lantsov
+      url: https://github.com/GrigoryLantsov/
+    name: node-app
+    urls:
+    - https://grigorylantsov.github.io/helm-library/common/node-app-3.0.3.tgz
+    version: 3.0.3
+generated: "2023-11-08T17:35:20.294225721+03:00"

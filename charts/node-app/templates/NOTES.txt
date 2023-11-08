@@ -1,0 +1,4 @@
+{{- include "common.notes.final" . -}}
+
+{{- include "node.checkRollingTags" . }}
+{{- include "node.validateValues" . }}

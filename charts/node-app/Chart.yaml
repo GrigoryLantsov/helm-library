@@ -1,0 +1,20 @@
+apiVersion: v2
+name: node-app
+description: A Helm chart for Kubernetes
+keywords:
+  - node
+  - javascript
+  - nodejs
+version: 3.0.3
+appVersion: "3.0.3"
+
+maintainers:
+  - name : Grigory Lantsov
+    email: lanercer@gmail.com
+    url: https://github.com/GrigoryLantsov/
+
+dependencies:
+  - name: helm-library
+    version: 3.0.3
+    repository: https://grigorylantsov.github.io/helm-library/
+

@@ -1,0 +1,194 @@
+global:
+  imagePullSecrets: {}
+monitor:
+  enabled: true
+  port: 8081
+
+diagnosticMode:
+  enabled: false
+
+livenessProbe:
+  enabled: false
+readinessProbe:
+  enabled: false
+startupProbe:
+  enabled: False
+
+job:
+  enabled: false
+  # restartPolicy: Never
+  # image: test:test
+  # workingDir: /app/migrate
+  # command: ["dotnet","Ins.Migrator.dll"]
+  diagnosticMode:
+    enabled: false
+  startupProbe:
+    enabled: false
+  livenessProbe:
+    enabled: false
+  readinessProbe:
+    enabled: false
+
+image:
+  repository: nginxinc/nginx-unprivileged
+  tag: latest
+  digest: ""
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+  debug: false
+
+containerPorts:
+  http: 3000
+
+podAnnotations:
+
+autoscaling:
+  enabled: false
+
+replicaCount:
+  _default: 1
+
+topSprConstr:
+  enabled: false
+
+secrets:
+  enabled: true
+  # rolename: test
+  file:
+    enabled: false
+  #   path:
+  #     - name: secret1
+  #       path:
+  #         _default: "dat/data/dfb/dafs"
+  #         dev: "asd/data/jadfha"
+  #       key:
+  #         _default: DB_USER
+  #         dev: DB_USERNAME
+  #         test: DB_PASSWORD
+  #       mountPath: /path/on/docker
+  #     - name: secret20
+  #       path: "bar/data/db"
+  #       value: data2/dass/sarw
+  #       mountPath: /path/on/docker
+  # path:
+  # - name: "foo"
+  #   path: "bar/data/db"
+  #   key: "F00bAr"
+
+affinity:
+  enabled: true
+podAntiAffinityPreset: hard
+nodeAffinity:
+  enabled: false
+
+# topologySpreadConstraints:
+#   - maxSkew: 1
+#     topologyKey: "topology.kubernetes.io/zone"
+#     whenUnsatisfiable: "DoNotSchedule"
+#     labelSelector:
+#       matchLabels:
+#         app.kubernetes.io/name: node-app
+
+hostNetwork: false
+
+podSecurityContext:
+  enabled: true
+  fsGroup: 101
+  runAsUser: 101
+  runAsGroup: 101
+  # privileged: false
+
+containerSecurityContext:
+  enabled: true
+  capabilities:
+    drop: ["ALL"]
+    add: ["SYS_NICE", "NET_BIND_SERVICE"]
+    # add: ["CAP_CHOWN", "CAP_NET_BIND_SERVICE", "CAP_SETGID", "CAP_SETUID"]
+  allowPrivilegeEscalation: false
+  privileged: false
+
+res:
+  map:
+    enabled: false
+  abs:
+    enabled: true
+
+emptyDir:
+  enabled: false
+  # sizeLimit: 500Mi
+  # path: /var/run
+
+service:
+  type: ClusterIP
+  ports:
+    http: 80
+
+ingress:
+  nginx:
+    enabled: false
+  traefik:
+    enabled: false
+    middleware:
+      enabled: false
+    rewrite:
+      enabled: false
+      # target:
+      # source:
+      # target: "^/api/lk-agent/(.*)"
+      # source: "/lk-agent/api/v1/$1"
+  # annotations:
+  #   kubernetes.io/ingress.class: nginx
+  #   nginx.ingress.kubernetes.io/proxy-body-size: "200m"
+  #   nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+  #   nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+  # hosts:
+  #   - host:
+  #       _default: dev.example.com
+  #       dev: dev.example.com
+  #       test: test.example.com
+  #     paths:
+  #       - path: "/"
+  #         pathType: Prefix
+  #         port:
+  #           number: 801
+  #   - host:
+  #       _default: dev.example.com
+  #       dev: dev.example.com
+  #       test: test.example.com
+  #     paths:
+  #       - path: "/api/"
+  #         pathType: Prefix
+
+serviceAccount:
+  manual:
+    enabled: false
+  create: false
+
+persistence:
+  enabled: false
+
+application:
+  env:
+    # foo:
+    #   _default: "bar"
+    #   dev: "barr"
+    #   test: DOM
+
+volumes:
+  enabled: false
+
+configMap:
+  enabled: false
+  files:
+    # - name: config.json
+    #   mountPath: /opt/node-app/
+    #   data: |
+    #     {
+    #       key: 'SOME DATA JSON'
+    #     }
+    # - name: config2.json
+    #   mountPath: /opt/node-app/
+    #   data: |
+    #     {
+    #       key: 'SOME DATA JSON2'
+    #     }

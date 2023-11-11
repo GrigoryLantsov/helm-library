@@ -1,0 +1,4 @@
+{{- include "common.notes.final" . -}}
+
+{{- include "dotnet-app.checkRollingTags" . }}
+{{- include "dotnet-app.validateValues" . }}

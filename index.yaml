@@ -1,9 +1,30 @@
 apiVersion: v1
 entries:
+  dotnet-app:
+  - apiVersion: v2
+    appVersion: 3.0.3
+    created: "2023-11-11T12:29:15.207221797+03:00"
+    dependencies:
+    - name: helm-library
+      repository: https://grigorylantsov.github.io/helm-library/
+      version: 3.0.3
+    description: A Helm chart for Kubernetes
+    digest: a16574d5f6908acbe13bfe25290d036d107505b1bf41162e65726da8bfa3a5d9
+    keywords:
+    - dotnet
+    - C#
+    maintainers:
+    - email: lanercer@gmail.com
+      name: Grigory Lantsov
+      url: https://github.com/GrigoryLantsov/
+    name: dotnet-app
+    urls:
+    - https://grigorylantsov.github.io/helm-library/common/dotnet-app-3.0.3.tgz
+    version: 3.0.3
   helm-library:
   - apiVersion: v2
     appVersion: 3.0.3
-    created: "2023-11-08T17:35:20.294782286+03:00"
+    created: "2023-11-11T12:29:15.207824619+03:00"
     description: A Helm chart for Kubernetes.
     digest: 86e6b08e9ebc9abdfea7cf42937c3f3ca7b5d5987e2a7bad0d61a0d881dc24d8
     keywords:
@@ -20,7 +41,7 @@ entries:
   node-app:
   - apiVersion: v2
     appVersion: 3.0.3
-    created: "2023-11-08T17:35:20.295905066+03:00"
+    created: "2023-11-11T12:29:15.208913718+03:00"
     dependencies:
     - name: helm-library
       repository: https://grigorylantsov.github.io/helm-library/
@@ -39,4 +60,4 @@ entries:
     urls:
     - https://grigorylantsov.github.io/helm-library/common/node-app-3.0.3.tgz
     version: 3.0.3
-generated: "2023-11-08T17:35:20.294225721+03:00"
+generated: "2023-11-11T12:29:15.206294886+03:00"

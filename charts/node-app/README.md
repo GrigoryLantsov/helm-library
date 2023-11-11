@@ -8,8 +8,6 @@
 helm template . --debug --set global.env=dev
 ```
 
-Возможно добавить придется те сущности которые были указаны в основном values и вы сможете отдебажить проблему связанную с чартом.
-
 **Не забудьте откатить изменения values перед коммитом в репу!**
 
 ## TODO
@@ -21,6 +19,7 @@ Just confirm that the chart is worked:
 ```sh
 helm template node-app . --set global.env=dev --debug -f values.yaml
 install.go:192: [debug] Original chart version: ""
+```
 
 ---
 # Source: node-app/templates/service.yaml

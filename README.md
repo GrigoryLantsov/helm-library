@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This chart provides a common template helpers
+This chart provides a universal chart for every kind of applications
 
 ## Usage
 
@@ -11,7 +11,7 @@ This chart provides a common template helpers
 ```yaml
 dependencies:
   - name: helm-library
-    version: 0.1.0
+    version: 3.0.3
     repository: https://grigorylantsov.github.io/helm-library/
 ```
 
@@ -83,3 +83,5 @@ debug: false
 
 ## TODO
 Other documentation for .tpl files
+
+[Github](https://github.com/GrigoryLantsov)

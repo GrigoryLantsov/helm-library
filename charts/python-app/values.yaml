@@ -1,6 +1,5 @@
 global:
-  imagePullSecrets:
-
+  imagePullSecrets: {}
 monitor:
   enabled: true
   port: 8081
@@ -8,11 +7,19 @@ monitor:
 diagnosticMode:
   enabled: false
 
+livenessProbe:
+  enabled: false
+readinessProbe:
+  enabled: false
+startupProbe:
+  enabled: False
+
 job:
-  enabled: true
-  restartPolicy: Never
+  enabled: false
+  # restartPolicy: Never
+  # image: test:test
   # workingDir: /app/migrate
-  command: ["dotnet","Ins.Migrator.dll"]
+  # command: ["dotnet","Ins.Migrator.dll"]
   diagnosticMode:
     enabled: false
   startupProbe:
@@ -21,13 +28,6 @@ job:
     enabled: false
   readinessProbe:
     enabled: false
-
-livenessProbe:
-  enabled: false
-readinessProbe:
-  enabled: false
-startupProbe:
-  enabled: False
 
 image:
   repository: nginxinc/nginx-unprivileged
@@ -45,31 +45,36 @@ podAnnotations:
 autoscaling:
   enabled: false
 
+replicaCount:
+  _default: 1
 
-##### BANZAI
+topSprConstr:
+  enabled: false
+
 secrets:
   enabled: false
-  # rolename: #vault role
+  # rolename: test
   # sa: #sa
+  file:
+    enabled: false
+  #   path:
+  #     - name: secret1
+  #       path:
+  #         _default: "dat/data/dfb/dafs"
+  #         dev: "asd/data/jadfha"
+  #       key:
+  #         _default: DB_USER
+  #         dev: DB_USERNAME
+  #         test: DB_PASSWORD
+  #       mountPath: /path/on/docker
+  #     - name: secret20
+  #       path: "bar/data/db"
+  #       value: data2/dass/sarw
+  #       mountPath: /path/on/docker
   # path:
-  # - name: ""
-  #   path:
-  #     _default: ""
-  #   key: "y"
-  # - name: ""
-  #   path:
-  #     dev: ""
-  #   key: ""
-  # - name: ""
-  #   path:
-  #     dev: ""
-  #     uat: "t"
-  #   key: ""
-  # - name: "ConnectionStrings__Default"
-  #   path:
-  #     dev: ""
-  #     uat: "
-  #   key: "ConnectionStrings__Default"
+  # - name: "foo"
+  #   path: "bar/data/db"
+  #   key: "F00bAr"
 
 #### yandex cloud
 extsecret:
@@ -94,20 +99,19 @@ extsecret:
     #     uat: zhopa
     #   path: baR
 
-
-replicaCount:
-  _default: 1
-
-volumes:
-  enabled: true
-  path: /app/zhopa.json
-  subpath: zhopa.json
-
 affinity:
   enabled: true
 podAntiAffinityPreset: hard
-nodeAffinity:
+pythonAffinity:
   enabled: false
+
+# topologySpreadConstraints:
+#   - maxSkew: 1
+#     topologyKey: "topology.kubernetes.io/zone"
+#     whenUnsatisfiable: "DoNotSchedule"
+#     labelSelector:
+#       matchLabels:
+#         app.kubernetes.io/name: python-app
 
 hostNetwork: false
 
@@ -127,19 +131,35 @@ containerSecurityContext:
   allowPrivilegeEscalation: false
   privileged: false
 
+res:
+  map:
+    enabled: false
+  abs:
+    enabled: true
+
+emptyDir:
+  enabled: false
+  # sizeLimit: 500Mi
+  # path: /var/run
+
 service:
   type: ClusterIP
   ports:
-    http: 8080
-  nodePorts:
-    http: {}
+    http: 80
 
 ingress:
   nginx:
     enabled: false
   traefik:
     enabled: false
-  enabled: false
+    middleware:
+      enabled: false
+    rewrite:
+      enabled: false
+      # target:
+      # source:
+      # target: "^/api/lk-agent/(.*)"
+      # source: "/lk-agent/api/v1/$1"
   # annotations:
   #   kubernetes.io/ingress.class: nginx
   #   nginx.ingress.kubernetes.io/proxy-body-size: "200m"
@@ -153,6 +173,8 @@ ingress:
   #     paths:
   #       - path: "/"
   #         pathType: Prefix
+  #         port:
+  #           number: 801
   #   - host:
   #       _default: dev.example.com
   #       dev: dev.example.com
@@ -162,6 +184,8 @@ ingress:
   #         pathType: Prefix
 
 serviceAccount:
+  manual:
+    enabled: false
   create: false
 
 persistence:
@@ -173,3 +197,22 @@ application:
     #   _default: "bar"
     #   dev: "barr"
     #   test: DOM
+
+volumes:
+  enabled: false
+
+configMap:
+  enabled: false
+  files:
+    # - name: config.json
+    #   mountPath: /opt/python-app/
+    #   data: |
+    #     {
+    #       key: 'SOME DATA JSON'
+    #     }
+    # - name: config2.json
+    #   mountPath: /opt/python-app/
+    #   data: |
+    #     {
+    #       key: 'SOME DATA JSON2'
+    #     }

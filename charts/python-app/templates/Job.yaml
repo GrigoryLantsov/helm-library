@@ -37,8 +37,8 @@ spec:
       hostAliases: {{- include "common.tplvalues.render" (dict "value" .Values.hostAliases "context" $) | nindent 8 }}
       {{- end }}
       restartPolicy: {{ .Values.job.restartPolicy }}
-      {{- if .Values.nodeSelector }}
-      nodeSelector: {{- include "common.tplvalues.render" (dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
+      {{- if .Values.pythonSelector }}
+      pythonSelector: {{- include "common.tplvalues.render" (dict "value" .Values.pythonSelector "context" $) | nindent 8 }}
       {{- end }}
       {{- if .Values.tolerations }}
       tolerations: {{- include "common.tplvalues.render" (dict "value" .Values.tolerations "context" $) | nindent 8 }}
@@ -71,7 +71,7 @@ spec:
           {{- if .Values.job.image }}
           image: {{ .Values.job.image }}
           {{- else }}
-          image: {{ include "node.image" . }}
+          image: {{ include "python.image" . }}
           {{- end }}
           imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
           {{- if .Values.containerSecurityContext.enabled }}

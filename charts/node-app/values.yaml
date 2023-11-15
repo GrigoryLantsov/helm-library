@@ -77,7 +77,7 @@ secrets:
   #   key: "F00bAr"
 
 #### yandex cloud
-extsecrets:
+extsecret:
   enabled: false
   single:
     enabled: false
@@ -85,12 +85,18 @@ extsecrets:
     enabled: true
   # localpath: /app/zhopa.json
   # localsubpath: zhopa.json
+  rewrite:
+    enabled: false
   list:
     # - name: foo
-    #   key: foo
-    #   path: bar
+    #   key:
+    #     _default: foo
+    #   path: ulyu
     # - name: foo
-    #   key: baR
+    #   key:
+    #     _default: baR
+    #     dev: oooopa
+    #     uat: zhopa
     #   path: baR
 
 affinity:

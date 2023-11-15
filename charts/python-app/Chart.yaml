@@ -1,0 +1,18 @@
+apiVersion: v2
+name: python-app
+description: A Helm chart for Kubernetes
+keywords:
+  - python
+  - py
+version: 3.0.4
+appVersion: "3.0.4"
+
+maintainers:
+  - name : Grigory Lantsov
+    email: lanercer@gmail.com
+    url: https://github.com/GrigoryLantsov/
+
+dependencies:
+  - name: helm-library
+    version: 3.0.4
+    repository: https://grigorylantsov.github.io/helm-library/

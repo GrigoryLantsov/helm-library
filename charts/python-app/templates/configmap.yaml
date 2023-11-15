@@ -1,0 +1,11 @@
+{{- if .Values.configMap.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "common.names.fullname" . }}
+data:
+{{- range .Values.configMap.files }}
+  {{ .name }}: |-
+{{ .data | indent 4 }}
+{{- end }}
+{{- end }}

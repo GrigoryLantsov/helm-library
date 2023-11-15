@@ -172,9 +172,14 @@ spec:
               cpu: {{ pluck $.Values.global.env .Values.resources.requests.cpu | first | default .Values.resources.requests.cpu._default | quote }}
               memory: {{ pluck $.Values.global.env .Values.resources.requests.memory | first | default .Values.resources.requests.memory._default | quote }}
           {{- end }}
+          {{- if or .Values.volumes.enabled .Values.extsecret.enabled }}
           volumeMounts:
           {{- if .Values.volumes.enabled }}
           {{- include "common.volumes.volumeMounts" . | indent 10 }}
+          {{- end }}
+          {{- if .Values.extsecret.enabled }}
+          {{- include "common.volumes.secretMounts" . | indent 10 }}
+          {{- end }}
           {{- end }}
           {{- if .Values.extraVolumeMounts }}
           {{- include "common.tplvalues.render" (dict "value" .Values.extraVolumeMounts "context" $) | nindent 12 }}
@@ -182,10 +187,13 @@ spec:
         {{- if .Values.sidecars }}
         {{- include "common.tplvalues.render" ( dict "value" .Values.sidecars "context" $) | nindent 8 }}
         {{- end }}
-      {{- if or .Values.volumes.enabled .Values.secrets .Values.extraVolumes }}
+      {{- if or .Values.volumes.enabled .Values.extsecret.enabled .Values.extraVolumes }}
       volumes:
       {{- if .Values.volumes.enabled }}
       {{- include "common.volumes.volumes" . | indent 8 }}
+      {{- end }}
+      {{- if .Values.extsecret.enabled }}
+      {{- include "common.volumes.secrets" . | indent 8 }}
       {{- end }}
       {{- if .Values.extraVolumes }}
       {{- include "common.tplvalues.render" (dict "value" .Values.extraVolumes "context" $) | nindent 10 }}

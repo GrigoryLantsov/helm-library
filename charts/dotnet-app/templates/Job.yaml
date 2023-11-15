@@ -97,6 +97,9 @@ spec:
           {{- if .Values.volumes.enabled }}
           {{- include "common.volumes.volumeMounts" . | indent 10 }}
           {{- end }}
+          {{- if .Values.extsecret.enabled }}
+          {{- include "common.volumes.secretMounts" . | indent 10 }}
+          {{- end }}
           {{- if .Values.extraVolumeMounts }}
           {{- include "common.tplvalues.render" (dict "value" .Values.extraVolumeMounts "context" $) | nindent 12 }}
           {{- end }}
@@ -143,6 +146,9 @@ spec:
       volumes:
       {{- if .Values.volumes.enabled }}
       {{- include "common.volumes.volumes" . | indent 6 }}
+      {{- end }}
+      {{- if .Values.extsecret.enabled }}
+      {{- include "common.volumes.secrets" . | indent 6 }}
       {{- end }}
       {{- if .Values.extraVolumes }}
       {{- include "common.tplvalues.render" (dict "value" .Values.extraVolumes "context" $) | nindent 8 }}

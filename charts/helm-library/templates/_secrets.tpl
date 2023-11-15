@@ -139,33 +139,3 @@ Usage:
 {{- end }}
 {{- end }}
 {{- end }}
-
-
-{{/*
-Deployment secretRef for environment
-
-Usage:
-{{- include "common.extsecrets.secretRef" . }}
-*/}}
-
-{{- define "common.secrets.secretEnv" }}
-{{- $env := default "_default" $.Values.global.env }}
-{{- range $objects := .Values.secrets.path }}
-{{- $path := "" }}
-{{- $key := "" }}
-{{- if kindIs "map" $objects.path }}
-  {{- $path = default (index $objects.path $env) (index $objects.path "_default") }}
-{{- else }}
-  {{- $path = index $objects.path $env }}
-{{- end }}
-{{- if kindIs "map" $objects.key }}
-  {{- $key = default (index $objects.key $env) (index $objects.key "_default") }}
-{{- else }}
-  {{- $key = $objects.key }}
-{{- end }}
-{{- if and $path $key }}
-- name: {{ $objects.name }}
-  value: vault:{{ $path }}#{{ $key }}
-{{- end }}
-{{- end }}
-{{- end }}

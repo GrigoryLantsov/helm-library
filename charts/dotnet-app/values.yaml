@@ -78,17 +78,19 @@ extsecret:
     enabled: false
   multiple:
     enabled: true
-  # list:
-  #   - name: foo
-  #     key:
-  #       _default: foo
-  #     path: ulyu
-  #   - name: foo
-  #     key:
-  #       _default: baR
-  #       dev: oooopa
-  #       uat: zhopa
-  #     path: baR
+  # localpath: /app/zhopa.json
+  # localsubpath: zhopa.json
+  list:
+    # - name: foo
+    #   key:
+    #     _default: foo
+    #   path: ulyu
+    # - name: foo
+    #   key:
+    #     _default: baR
+    #     dev: oooopa
+    #     uat: zhopa
+    #   path: baR
 
 
 replicaCount:

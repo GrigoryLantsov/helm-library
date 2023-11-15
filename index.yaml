@@ -3,13 +3,13 @@ entries:
   dotnet-app:
   - apiVersion: v2
     appVersion: 3.0.4
-    created: "2023-11-15T11:54:47.013361113+03:00"
+    created: "2023-11-15T12:32:31.387342084+03:00"
     dependencies:
     - name: helm-library
       repository: https://grigorylantsov.github.io/helm-library/
-      version: 3.0.3
+      version: 3.0.4
     description: A Helm chart for Kubernetes
-    digest: eda6599cbf7ac8b96784de3c7c3e45fc4e9f95a40b6415c1c539ded6d79fcc51
+    digest: 67e7963706addd1e053909bf4a3c3ee81e7299aca55c5860b21440edf0241c47
     keywords:
     - dotnet
     - C#
@@ -23,7 +23,7 @@ entries:
     version: 3.0.4
   - apiVersion: v2
     appVersion: 3.0.3
-    created: "2023-11-15T11:54:47.012519832+03:00"
+    created: "2023-11-15T12:32:31.386442977+03:00"
     dependencies:
     - name: helm-library
       repository: https://grigorylantsov.github.io/helm-library/
@@ -43,8 +43,24 @@ entries:
     version: 3.0.3
   helm-library:
   - apiVersion: v2
+    appVersion: 3.0.4
+    created: "2023-11-15T12:32:31.388088038+03:00"
+    description: A Helm chart for Kubernetes.
+    digest: 229577d58bf10f42309d832c50e721947e0867d2fbacb3c81c4a2d156e040e30
+    keywords:
+    - templates
+    - helpers
+    maintainers:
+    - email: lanercer@gmail.com
+      name: Grigory Lantsov
+      url: https://github.com/GrigoryLantsov/
+    name: helm-library
+    urls:
+    - https://grigorylantsov.github.io/helm-library/common/helm-library-3.0.4.tgz
+    version: 3.0.4
+  - apiVersion: v2
     appVersion: 3.0.3
-    created: "2023-11-15T11:54:47.014286319+03:00"
+    created: "2023-11-15T12:32:31.387678713+03:00"
     description: A Helm chart for Kubernetes.
     digest: 86e6b08e9ebc9abdfea7cf42937c3f3ca7b5d5987e2a7bad0d61a0d881dc24d8
     keywords:
@@ -61,13 +77,13 @@ entries:
   node-app:
   - apiVersion: v2
     appVersion: 3.0.4
-    created: "2023-11-15T11:54:47.01719867+03:00"
+    created: "2023-11-15T12:32:31.390902529+03:00"
     dependencies:
     - name: helm-library
       repository: https://grigorylantsov.github.io/helm-library/
-      version: 3.0.3
+      version: 3.0.4
     description: A Helm chart for Kubernetes
-    digest: 8b8e4841ec587456bee1f61fadc235289b2e7034e012dade76d8cf0fbc594f8b
+    digest: f0281077a0ae5a7cc642724c29aca5dc72fd0f67b1a5f0e98f1789c4db693bfa
     keywords:
     - node
     - javascript
@@ -82,7 +98,7 @@ entries:
     version: 3.0.4
   - apiVersion: v2
     appVersion: 3.0.3
-    created: "2023-11-15T11:54:47.01568305+03:00"
+    created: "2023-11-15T12:32:31.389029843+03:00"
     dependencies:
     - name: helm-library
       repository: https://grigorylantsov.github.io/helm-library/
@@ -101,4 +117,4 @@ entries:
     urls:
     - https://grigorylantsov.github.io/helm-library/common/node-app-3.0.3.tgz
     version: 3.0.3
-generated: "2023-11-15T11:54:47.010988043+03:00"
+generated: "2023-11-15T12:32:31.385328737+03:00"

@@ -52,8 +52,9 @@ topSprConstr:
   enabled: false
 
 secrets:
-  enabled: true
+  enabled: false
   # rolename: test
+  # sa: #sa
   file:
     enabled: false
   #   path:
@@ -74,6 +75,21 @@ secrets:
   # - name: "foo"
   #   path: "bar/data/db"
   #   key: "F00bAr"
+
+#### yandex cloud
+extsecrets:
+  enabled: false
+  single:
+    enabled: false
+  multiple:
+    enabled: true
+  list:
+    # - name: foo
+    #   key: foo
+    #   path: bar
+    # - name: foo
+    #   key: baR
+    #   path: baR
 
 affinity:
   enabled: true

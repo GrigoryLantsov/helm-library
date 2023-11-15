@@ -9,10 +9,10 @@ diagnosticMode:
   enabled: false
 
 job:
-  enabled: false
+  enabled: true
   restartPolicy: Never
   # workingDir: /app/migrate
-  # command: ["dotnet","Ins.Migrator.dll"]
+  command: ["dotnet","Ins.Migrator.dll"]
   diagnosticMode:
     enabled: false
   startupProbe:
@@ -45,38 +45,55 @@ podAnnotations:
 autoscaling:
   enabled: false
 
+
+##### BANZAI
 secrets:
   enabled: false
-  # rolename: cks-role
-  # sa: cks-deployer
+  # rolename: #vault role
+  # sa: #sa
   # path:
-  # - name: "CksAuth__Jwt__Key"
+  # - name: ""
   #   path:
-  #     _default: "cks/data/creds"
-  #   key: "CksAuth__Jwt__Key"
-  # - name: "Estore__Clients__app-cks-bim"
+  #     _default: ""
+  #   key: "y"
+  # - name: ""
   #   path:
-  #     dev: "cks/data/estore/cks-bim"
-  #     uat: "cks/data/estore/cks-bim-uat"
-  #   key: "Estore__Clients__app-cks-bim"
-  # - name: "Estore__Clients__app-cks-documents"
+  #     dev: ""
+  #   key: ""
+  # - name: ""
   #   path:
-  #     dev: "cks/data/estore/cks-documents"
-  #     uat: "cks/data/estore/cks-documents-uat"
-  #   key: "Estore__Clients__app-cks-documents"
+  #     dev: ""
+  #     uat: "t"
+  #   key: ""
   # - name: "ConnectionStrings__Default"
   #   path:
-  #     dev: "cks/data/database/d-infra-postgres-01.ct.ahml1.ru/cks_dev_4d"
-  #     uat: "cks/data/database/u-pgsql-haproxy-02.ct.ahml1.ru/cks_4d"
+  #     dev: ""
+  #     uat: "
   #   key: "ConnectionStrings__Default"
+
+#### yandex cloud
+extsecrets:
+  enabled: false
+  single:
+    enabled: false
+  multiple:
+    enabled: true
+  list:
+    # - name: foo
+    #   key: foo
+    #   path: bar
+    # - name: foo
+    #   key: baR
+    #   path: baR
 
 
 replicaCount:
   _default: 1
 
 volumes:
-  enabled: false
-  path: /app
+  enabled: true
+  path: /app/zhopa.json
+  subpath: zhopa.json
 
 affinity:
   enabled: true

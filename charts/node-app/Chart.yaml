@@ -5,8 +5,8 @@ keywords:
   - node
   - javascript
   - nodejs
-version: 3.0.3
-appVersion: "3.0.3"
+version: 3.0.4
+appVersion: "3.0.4"
 
 maintainers:
   - name : Grigory Lantsov
@@ -17,4 +17,3 @@ dependencies:
   - name: helm-library
     version: 3.0.3
     repository: https://grigorylantsov.github.io/helm-library/
-

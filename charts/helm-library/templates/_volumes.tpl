@@ -18,7 +18,7 @@
 {{- define "common.volumes.persistent" }}
   - name: {{ include "common.names.fullname" . }}
     persistentVolumeClaim:
-      name: {{ include "common.names.fullname" . }}
+      claimName: {{ include "common.names.fullname" . }}
 {{- end }}
 
 {{- define "common.volumes.persistentMounts" }}

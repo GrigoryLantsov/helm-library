@@ -1,6 +1,6 @@
 apiVersion: v2
 name: node-app
-description: A Helm chart for Kubernetes
+description: A Node Helm chart for Kubernetes
 keywords:
   - node
   - javascript

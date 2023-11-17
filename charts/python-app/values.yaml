@@ -51,6 +51,7 @@ replicaCount:
 topSprConstr:
   enabled: false
 
+# banzai injector
 secrets:
   enabled: false
   # rolename: test
@@ -190,13 +191,35 @@ serviceAccount:
 
 persistence:
   enabled: false
+  # size: 50
+  # bucket: k8s-dev-pv/
+  # accessModes:
+  #   - ReadWriteMany
 
 application:
+  secret:
+    MYSQL_ROOT_PASSWORD:
+      dev: password
+    REDIS_ROOT_PASSWORD:
+      dev: password
+    foo:
+      _default: "bar"
+      dev: "barr"
+      test: DOM
+    # - name: MYSQL_ROOT_PASSWORD
+    #   key:
+    #     _default: password
+    # - name: REDIS_ROOT_PASSWORD
+    #   key:
+    #     _default: password2
   env:
-    # foo:
-    #   _default: "bar"
-    #   dev: "barr"
-    #   test: DOM
+    foo:
+      _default: "bar"
+      dev: "barr"
+      test: DOM
+    test:
+      _default: bar
+
 
 volumes:
   enabled: false

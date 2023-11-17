@@ -83,7 +83,7 @@ extsecret:
   single:
     enabled: false
   multiple:
-    enabled: true
+    enabled: false
   # localpath: /app/zhopa.json
   # localsubpath: zhopa.json
   rewrite:
@@ -198,14 +198,14 @@ persistence:
 
 application:
   secret:
-    MYSQL_ROOT_PASSWORD:
-      dev: password
-    REDIS_ROOT_PASSWORD:
-      dev: password
-    foo:
-      _default: "bar"
-      dev: "barr"
-      test: DOM
+    # MYSQL_ROOT_PASSWORD:
+    #   dev: password
+    # REDIS_ROOT_PASSWORD:
+    #   dev: password
+    # foo:
+    #   _default: "bar"
+    #   dev: "barr"
+    #   test: DOM
     # - name: MYSQL_ROOT_PASSWORD
     #   key:
     #     _default: password
@@ -213,12 +213,12 @@ application:
     #   key:
     #     _default: password2
   env:
-    foo:
-      _default: "bar"
-      dev: "barr"
-      test: DOM
-    test:
-      _default: bar
+    # foo:
+    #   _default: "bar"
+    #   dev: "barr"
+    #   test: DOM
+    # test:
+    #   _default: bar
 
 
 volumes:

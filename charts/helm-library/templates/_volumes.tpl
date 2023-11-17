@@ -21,7 +21,7 @@
       name: {{ include "common.names.fullname" . }}
 {{- end }}
 
-{{- define "common.volumes.volumeMounts" }}
+{{- define "common.volumes.persistentMounts" }}
   - name: {{ include "common.names.fullname" . }}
     mountPath: {{ .Values.persistence.path }}
 {{- end }}

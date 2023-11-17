@@ -92,6 +92,9 @@ spec:
       {{- if .Values.extsecret.multiple.enabled }}
       {{- include "common.volumes.secrets" . | indent 8 }}
       {{- end }}
+      {{- if .Values.persistence.enabled }}
+      {{- include "common.volumes.persistent" . | indent 6 }}
+      {{- end }}
       {{- if .Values.secrets.file.enabled }}
       {{- include "common.secrets.file.volume" $ | indent 8 }}
       {{- end }}
@@ -199,6 +202,9 @@ spec:
               mountPath: {{ .mountPath }}
               subPath: {{ .name }}
           {{- end }}
+          {{- end }}
+          {{- if .Values.persistence.enabled }}
+          {{- include "common.volumes.persistentMounts" . | indent 10 }}
           {{- end }}
           {{- if .Values.extsecret.multiple.enabled }}
           {{- include "common.volumes.secretMounts" . | indent 10 }}

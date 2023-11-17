@@ -195,6 +195,7 @@ persistence:
   # bucket: k8s-dev-pv/
   # accessModes:
   #   - ReadWriteMany
+  # path: /data
 
 application:
   secret:

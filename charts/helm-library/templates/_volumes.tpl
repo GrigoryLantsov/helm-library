@@ -15,6 +15,17 @@
     {{- end }}
 {{- end }}
 
+{{- define "common.volumes.persistent" }}
+  - name: {{ include "common.names.fullname" . }}
+    persistentVolumeClaim:
+      name: {{ include "common.names.fullname" . }}
+{{- end }}
+
+{{- define "common.volumes.volumeMounts" }}
+  - name: {{ include "common.names.fullname" . }}
+    mountPath: {{ .Values.persistence.path }}
+{{- end }}
+
 {{- define "common.volumes.extravolumes" }}
 {{- range $key := .Values.volumes.extraVolumes }}
   - name: $key.name

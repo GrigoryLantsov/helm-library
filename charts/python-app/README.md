@@ -3,23 +3,127 @@
 
 ## Debug
 
-Если возникает ошибка в джобе хельма связанная с самим чартом (expected key or smth), то локально подменяйте values файл на свой, запустите команду:
-```sh
-helm template . --debug --set global.env=dev
-```
+Example:
 
-**Не забудьте откатить изменения values перед коммитом в репу!**
+```
+diagnosticMode:
+  enabled: false
+
+command: ["/start"]
+
+job:
+  enabled: false
+
+livenessProbe:
+  enabled: false
+  path: /self
+readinessProbe:
+  enabled: false
+  path: /ready
+startupProbe:
+  enabled: False
+
+image:
+  repository: node
+  tag: 19.7.0-slim
+  digest: ""
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+  debug: false
+
+containerPorts:
+  http: 8080
+
+podAnnotations:
+
+autoscaling:
+  enabled: false
+
+replicaCount:
+  _default: 1
+  dev: 1
+
+volumes:
+  enabled: false
+#  path: /app/appsettings.json
+#  subpath: appsettings.json
+
+affinity: {}
+
+podSecurityContext:
+  enabled: false
+containerSecurityContext:
+  enabled: false
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 2048Mi
+  requests:
+    cpu: 200m
+    memory: 500Mi
+
+service:
+  type: ClusterIP
+  ports:
+    http: 8080
+  nodePorts:
+    http: {}
+
+ingress:
+  enabled: false
+
+serviceAccount:
+  create: false
+
+persistence:
+  enabled: true
+  size: 50
+  bucket: k8s-dev-pv/
+  accessModes:
+    - ReadWriteMany
+  path: /test/media
+
+extsecret:
+  enabled: true
+  single:
+    enabled: true
+  multiple:
+    enabled: false
+  list:
+    - key:
+        dev: fasd
+      path: REDIS_SECRET
+    - key:
+        dev: 1234
+      path: UPLOADER_POSTGRES_USER
+    - key:
+        dev: sgda
+      path: UPLOADER_POSTGRES_PASSWORD
+
+application:
+  env:
+    REDIS_URL:
+      dev: redis://redis:6379
+  secret:
+    SECRET_KEY:
+      dev: REDIS_SECRET
+    POSTGRES_DB:
+      dev: UPLOADER_POSTGRES_USER
+    POSTGRES_USER:
+      dev: UPLOADER_POSTGRES_USER
+    POSTGRES_PASSWORD:
+      dev: UPLOADER_POSTGRES_PASSWORD
+```
 
 ## TODO
 
-1. Test Chart on multiple npm repositories
-2. Create documentation for that Chart
+1. Create documentation for that Chart
 
 Just confirm that the chart is worked:
 ```sh
 helm template python-app . --set global.env=dev --debug -f values.yaml
 install.go:192: [debug] Original chart version: ""
-```
 
 ---
 # Source: python-app/templates/service.yaml
@@ -103,7 +207,7 @@ spec:
     - host: example.com
       http:
         paths:
-          - path: /admin-panel/api/v1
+          - path: /example/api/v1
             pathType: Prefix
             backend:
               service:
@@ -113,7 +217,7 @@ spec:
     - host: dev.example.com
       http:
         paths:
-          - path: /admin-panel/swagger
+          - path: /example/swagger
             pathType: Prefix
             backend:
               service:

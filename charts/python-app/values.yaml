@@ -192,7 +192,9 @@ serviceAccount:
 persistence:
   enabled: false
   # size: 50
-  # bucket: k8s-dev-pv/
+  # bucket:
+  #   dev: k8s-dev-pv/
+  #   uat: k8s-uat-pv/
   # accessModes:
   #   - ReadWriteMany
   # path: /data

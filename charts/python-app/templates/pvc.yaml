@@ -34,7 +34,7 @@ spec:
     name: {{ include "common.names.fullname" . }}
   csi:
     driver: ru.yandex.s3.csi
-    volumeHandle: {{ .Values.persistence.bucket | quote }}
+    volumeHandle: {{ pluck $.Values.global.env .Values.persistence.bucket | first | default .Values.persistence.bucket._default | quote }}
     controllerPublishSecretRef:
       name: csi-s3-secret
       namespace: kube-system

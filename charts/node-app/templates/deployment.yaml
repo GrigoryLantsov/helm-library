@@ -73,27 +73,14 @@ spec:
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       {{- end }}
       volumes:
-      {{- if .Values.emptyDir.enabled }}
-        - name: empty
-          {{- if .Values.emptyDir.sizeLimit }}
-          emptyDir:
-            sizeLimit: {{ .Values.emptyDir.sizeLimit }}
-          {{- else }}
-          emptyDir: { }
-          {{- end }}
-      {{- end }}
-      {{- if .Values.configMap.enabled }}
-      {{- range .Values.configMap.files }}
-        - name: {{ .name | replace "." "-" }}
-          configMap:
-            name: {{ include "common.names.fullname" $ }}
-      {{- end }}
+      {{- if .Values.volumes.enabled }}
+      {{- include "common.volumes.volumes" . | indent 8 }}
       {{- end }}
       {{- if .Values.extsecret.enabled }}
       {{- include "common.volumes.secrets" . | indent 8 }}
       {{- end }}
-      {{- if .Values.secrets.file.enabled }}
-      {{- include "common.secrets.file.volume" $ | indent 8 }}
+      {{- if .Values.extraVolumes }}
+      {{- include "common.tplvalues.render" (dict "value" .Values.extraVolumes "context" $) | nindent 10 }}
       {{- end }}
       {{- if .Values.podSecurityContext.enabled }}
       securityContext: {{- omit .Values.podSecurityContext "enabled" | toYaml | nindent 8 }}
@@ -188,21 +175,4 @@ spec:
           {{- if .Values.res.abs.enabled }}
           resources: {{- toYaml .Values.resources | nindent 12 }}
           {{- end }}
-          volumeMounts:
-          {{- if .Values.emptyDir.enabled }}
-            - name: empty
-              mountPath: {{ .Values.emptyDir.path }}
-          {{- end }}
-          {{- if .Values.configMap.enabled }}
-          {{- range .Values.configMap.files }}
-            - name: {{ .name | replace "." "-" }}
-              mountPath: {{ .mountPath }}
-              subPath: {{ .name }}
-          {{- end }}
-          {{- end }}
-          {{- if .Values.extsecret.enabled }}
-          {{- include "common.volumes.secretMounts" . | indent 10 }}
-          {{- end }}
-          {{- if .Values.secrets.file.enabled }}
-          {{- include "common.secrets.file.volumeMounts" $ | indent 12 }}
-          {{- end }}
+          

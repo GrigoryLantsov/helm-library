@@ -76,7 +76,7 @@ tag: release-1
 pullPolicy: Always
 debug: false
 
-# deployment
+# deployments
 {{- include "common.images.image" (dict "imageRoot" .Values.image "global" .Values.global) -}}
 ```
 

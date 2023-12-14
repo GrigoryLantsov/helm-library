@@ -175,23 +175,4 @@ spec:
           {{- if .Values.res.abs.enabled }}
           resources: {{- toYaml .Values.resources | nindent 12 }}
           {{- end }}
-          {{- if or .Values.volumes.enabled .Values.extsecret.enabled }}
-          volumeMounts:
-          {{- if .Values.emptyDir.enabled }}
-            - name: empty
-              mountPath: {{ .Values.emptyDir.path }}
-          {{- end }}
-          {{- if .Values.configMap.enabled }}
-          {{- range .Values.configMap.files }}
-            - name: {{ .name | replace "." "-" }}
-              mountPath: {{ .mountPath }}
-              subPath: {{ .name }}
-          {{- end }}
-          {{- end }}
-          {{- if .Values.secrets.file.enabled }}
-          {{- include "common.secrets.file.volumeMounts" $ | indent 12 }}
-          {{- end }}
-          {{- if .Values.extraVolumeMounts }}
-          {{- include "common.tplvalues.render" (dict "value" .Values.extraVolumeMounts "context" $) | nindent 12 }}
-          {{- end }}
-          {{- end }}
+          

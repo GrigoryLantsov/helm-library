@@ -112,6 +112,9 @@ spec:
           {{- if .Values.application.env }}
             {{- include "common.env.envs" . | indent 8 }}
           {{- end }}
+          {{- if .Values.application.secret }}
+            {{- include "common.env.secretRef" . | indent 8 }}
+          {{- end }}
           {{- if .Values.secrets.enabled }}
           {{- include "common.secrets.secretEnv" $ | indent 10 }}
           {{- end }}

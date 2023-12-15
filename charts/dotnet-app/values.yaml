@@ -91,7 +91,7 @@ extsecret:
     #   key:
     #     _default: baR
     #     dev: oooopa
-    #     uat: zhopa
+    #     uat: test
     #   path: baR
 
 

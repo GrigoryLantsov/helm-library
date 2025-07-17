@@ -4,54 +4,29 @@
 {{/*
 Get envs from values
 */}}
-{{- define "common.env.envs" -}}
+{{- define "common.env.envs" }}
 {{- if .Values.global.env }}
 {{- range $key, $map := .Values.application.env }}
-  {{- if $map._default }}
-  - name: {{ $key | upper }}
-    value: {{ pluck $.Values.global.env $map | first | default $map._default | quote }}
-  {{- else if pluck $.Values.global.env $map }}
-  - name: {{ $key | upper }}
+  {{- if pluck $.Values.global.env $map }}
+  - name: {{ $key }}
     value: {{ pluck $.Values.global.env $map | first | quote }}
+  {{- else if $map._default }}
+  - name: {{ $key }}
+    value: {{ $map._default | quote }}
   {{- end }}
-{{- end -}}
+{{- end }}
 {{- else }}
 {{- range $key, $value := .Values.application.env }}
-  - name: {{ $key | upper }}
-    value: {{ $value | upper }}
-{{- end -}}
-{{- end -}}
-{{- end -}}
+- name: {{ $key }}
+  value: {{ $value }}
+{{- end }}
+{{- end }}
+{{- end }}
 
-{{/*
-Get secrets from values
-*/}}
-{{- define "common.env.secretRef" -}}
-{{- if .Values.global.env }}
-{{- $name := include "common.names.fullname" . }}
-{{- range $key, $map := .Values.application.secret -}}
-  {{- if $map._default }}
-  - name: {{ $key | upper }}
-    valueFrom:
-      secretKeyRef:
-        key: {{ pluck $.Values.global.env $map | first | default $map._default | quote }}
-        name: {{ $name }}
-  {{- else if pluck $.Values.global.env $map }}
-  - name: {{ $key | upper }}
-    valueFrom:
-      secretKeyRef:
-        key: {{ pluck $.Values.global.env $map | first | quote }}
-        name: {{ $name }}
-  {{- end }}
+{{- define "common.env.envSecretVars" -}}
+{{- $fullName := include "common.names.fullname" . -}}
+{{- range $key, $map := .Values.application.secret }}
+  - secretRef:
+      name: {{ $fullName }}-{{ $key | replace "_" "-" }}
 {{- end }}
-{{- else }}
-{{- $name := include "common.names.fullname" . }}
-{{- range $key, $value := .Values.application.secret }}
-  - name: {{ $key | upper }}
-  valueFrom:
-    secretKeyRef:
-    key: {{ $value | upper }}
-    name: {{ $name }}
 {{- end }}
-{{- end -}}
-{{- end -}}

@@ -79,6 +79,10 @@ Usage:
 {{- define "common.secrets.annotations" }}
 vault.security.banzaicloud.io/vault-role: "{{ .Values.secrets.rolename }}"
 vault.security.banzaicloud.io/vault-serviceaccount: "{{ .Values.secrets.sa }}"
+"vault.security.banzaicloud.io/vault-skip-verify": "true"
+{{- if .Values.secrets.refresh }}
+alpha.vault.security.banzaicloud.io/reload-on-secret-change: "true"
+{{- end }}
 {{- end -}}
 
 {{/*
@@ -135,7 +139,7 @@ Usage:
 {{- else }}
   {{- $key = $objects.key }}
 {{- end }}
-  {{ $objects.subPath }}: {{ printf "vault:%s#%s" $path $key | b64enc }}
+  {{ $objects.subPath }}: {{ if $objects.decode -}}{{ printf "vault:%s#${.%s | b64dec}" $path $key | b64enc | quote }}{{- else -}}{{ printf "vault:%s#%s" $path $key | b64enc | quote }}{{- end -}}
 {{- end }}
 {{- end }}
 {{- end }}

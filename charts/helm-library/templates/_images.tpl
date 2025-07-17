@@ -1,23 +1,24 @@
 {{/* vim: set filetype=mustache: */}}
+
 {{/*
 Return the proper image name
-{{ include "common.images.image" ( dict "imageRoot" .Values.path.to.the.image "global" .Values.global ) }}
+{{- include "common.images.image" (dict "imageRoot" .Values.path.to.the.image "global" .Values.global) }}
 */}}
-{{- define "common.images.image" -}}
-{{- $repositoryName := .imageRoot.repository -}}
-{{- $separator := ":" -}}
-{{- $termination := .imageRoot.tag | toString -}}
+{{- define "common.images.image" }}
+{{- $repositoryName := .imageRoot.repository }}
+{{- $separator := ":" }}
+{{- $termination := .imageRoot.tag }}
 {{- if .global }}
-    {{- if .global.imageRegistry }}
-     {{- $registryName = .global.imageRegistry -}}
-    {{- end -}}
-{{- end -}}
+  {{- if .global.imageRegistry }}
+    {{- $registryName = .global.imageRegistry }}
+  {{- end }}
+{{- end }}
 {{- if .imageRoot.digest }}
-    {{- $separator = "@" -}}
-    {{- $termination = .imageRoot.digest | toString -}}
-{{- end -}}
-{{- printf "%s%s%s" $repositoryName $separator $termination -}}
-{{- end -}}
+  {{- $separator = "@" }}
+  {{- $termination = .imageRoot.digest }}
+{{- end }}
+{{- printf "%s%s%s" $repositoryName $separator $termination }}
+{{- end }}
 
 {{/*
 Return the proper Docker Image Registry Secret Names

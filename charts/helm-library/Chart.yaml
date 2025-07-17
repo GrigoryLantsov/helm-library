@@ -6,8 +6,8 @@ keywords:
 - templates
 - helpers
 
-version: 3.0.6
-appVersion: "3.0.6"
+version: 4.0.0
+appVersion: "4.0.0"
 
 maintainers:
   - name : Grigory Lantsov

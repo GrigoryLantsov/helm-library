@@ -1,0 +1,24 @@
+{{- if .Values.ingress.traefik.middleware.enabled }}
+{{- $fullName := include "common.names.fullname" . -}}
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ $fullName }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+spec:
+{{- if .Values.ingress.traefik.rewrite.enabled }}
+  replacePathRegex:
+    regex: {{ .Values.ingress.traefik.rewrite.target }}
+    replacement: {{ .Values.ingress.traefik.rewrite.source }}
+{{- end }}
+{{- with .Values.ingress.traefik.middleware.rules }}
+{{- toYaml . | nindent 2 }}
+{{- end }}
+{{- end }}
+{{/*
+target like #"^/api/lk-agent/(.*)"
+source like #"/lk-agent/api/v1/$1"
+*/}}

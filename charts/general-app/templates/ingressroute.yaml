@@ -1,0 +1,58 @@
+{{- if .Values.ingress.traefik.enabled }}
+{{- $fullName := include "common.names.fullname" . -}}
+{{- $svcPort := .Values.service.ports.http -}}
+{{- $middlewareEnable := .Values.ingress.traefik.middleware.enabled -}}
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ $fullName }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+spec:
+  entryPoints:
+    - web
+  routes:
+    {{- range $name, $map := .Values.ingress.hosts }}
+    {{- $hosts := pluck $.Values.global.env $map.host | first | default $map.host._default }}
+    {{- range $map.paths }}
+    - match: Host(`{{ $hosts }}`) && PathPrefix(`{{ .path }}`)
+      kind: Rule
+      services:
+        - name: {{ $fullName }}
+          port: {{ $svcPort }}
+      {{- if $middlewareEnable }}
+      middlewares:
+        - name: {{ $fullName }}
+      {{- end }}
+    {{- end }}
+    {{- end }}
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ $fullName }}-websecure
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    {{- range $name, $map := .Values.ingress.hosts }}
+    {{- $hosts := pluck $.Values.global.env $map.host | first | default $map.host._default }}
+    {{- range $map.paths }}
+    - match: Host(`{{ $hosts }}`) && PathPrefix(`{{ .path }}`)
+      kind: Rule
+      services:
+        - name: {{ $fullName }}
+          port: {{ $svcPort }}
+      {{- if $middlewareEnable }}
+      middlewares:
+        - name: {{ $fullName }}
+      {{- end }}
+      {{- end }}
+      {{- end }}
+{{- end }}

@@ -1,0 +1,23 @@
+{{- if .Values.configMap.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "common.names.fullname" . }}
+data:
+{{- range .Values.configMap.files }}
+  {{ .name }}: |
+{{ .data | indent 4 }}
+{{- end }}
+{{- end }}
+---
+{{- if .Values.application.conf }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "common.names.fullname" . }}-application-yaml
+data:
+  {{- range $name, $config := .Values.application.conf }}
+  {{ $name }}: |-
+{{ tpl $config $ | indent 4 }}
+  {{- end }}
+{{- end }}

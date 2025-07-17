@@ -1,0 +1,216 @@
+apiVersion: {{ include "common.capabilities.deployment.apiVersion" . }}
+kind: Deployment
+metadata:
+  name: {{ include "common.names.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+  annotations:
+  {{- if .Values.commonAnnotations }}
+  {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- else if .Values.application.config }}
+  checksum/cm-config: {{ print "/opt/node-app/config.json" . | sha256sum | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.updateStrategy }}
+  strategy: {{- toYaml .Values.updateStrategy | nindent 4 }}
+  {{- end }}
+  selector:
+    matchLabels: {{- include "common.labels.matchLabels" . | nindent 6 }}
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ pluck $.Values.global.env .Values.replicaCount | first | default .Values.replicaCount._default }}
+  {{- end }}
+  template:
+    metadata:
+      annotations:
+      {{- include "common.annotations.autoreloader" . | indent 8 }}
+      {{- if .Values.secrets.enabled }}
+      {{- include "common.secrets.annotations" . | indent 8 }}
+      {{- end }}
+      {{- include "common.annotations.logKibana" . | indent 8 }}
+      labels: {{- include "common.labels.standard" . | nindent 8 }}
+        {{- if .Values.podLabels }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- if .Values.secrets.enabled }}
+      serviceAccountName: {{ .Values.secrets.sa }}
+      {{- end }}
+      {{- if .Values.serviceAccount.manual.enabled }}
+      serviceAccountName: {{ .Values.serviceAccount.manual.name }}
+      {{- end }}
+      {{- if .Values.serviceAccount.exists.enabled }}
+      serviceAccountName: {{ .Values.serviceAccount.exists.name }}
+      {{- end }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.hostAliases }}
+      hostAliases: {{- include "common.tplvalues.render" (dict "value" .Values.hostAliases "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.affinity.enabled }}
+      affinity:
+        podAffinity: {{- include "common.affinities.pods" (dict "type" .Values.podAffinityPreset "context" $) | nindent 10 }}
+        podAntiAffinity: {{- include "common.affinities.pods" (dict "type" .Values.podAntiAffinityPreset "context" $) | nindent 10 }}
+        {{- if .Values.nodeAffinity.enabled }}
+        nodeAffinity: {{- include "common.affinities.nodes" (dict "type" .Values.nodeAffinityPreset.type "key" .Values.nodeAffinityPreset.key "values" .Values.nodeAffinityPreset.values) | nindent 10 }}
+        {{- end }}
+      {{- end }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector: {{- include "common.tplvalues.render" (dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations: {{- include "common.tplvalues.render" (dict "value" .Values.tolerations "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.topSprConstr.enabled }}
+      topologySpreadConstraints: {{- include "common.tplvalues.render" (dict "value" .Values.topologySpreadConstraints "context" .) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.priorityClassName }}
+      priorityClassName: {{ .Values.priorityClassName | quote }}
+      {{- end }}
+      {{- if .Values.schedulerName }}
+      schedulerName: {{ .Values.schedulerName | quote }}
+      {{- end }}
+      {{- if .Values.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      {{- end }}
+      volumes:
+      {{- if .Values.volumes }}
+      {{- include "node-app.volumes" . | indent 6 }}
+      {{- end }}
+      {{- if .Values.emptyDir.enabled }}
+        - name: empty
+          {{- if .Values.emptyDir.sizeLimit }}
+          emptyDir:
+            sizeLimit: {{ .Values.emptyDir.sizeLimit }}
+          {{- else }}
+          emptyDir: { }
+          {{- end }}
+      {{- end }}
+      {{- if .Values.configMap.enabled }}
+      {{- range .Values.configMap.files }}
+        - name: {{ .name | replace "." "-" }}
+          configMap:
+            name: {{ include "common.names.fullname" $ }}
+      {{- end }}
+      {{- end }}
+      {{- if .Values.secrets.file.enabled }}
+      {{- include "common.secrets.file.volume" $ | indent 8 }}
+      {{- end }}
+      {{- if .Values.podSecurityContext.enabled }}
+      securityContext: {{- omit .Values.podSecurityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
+      {{- if .Values.hostNetwork }}
+      hostNetwork: {{ .Values.hostNetwork | default false }}
+      {{- end }}
+      containers:
+        - name: {{ include "common.names.fullname" . }}
+          image: {{ include "node.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
+          {{- if .Values.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          env:
+          {{- if .Values.application.env }}
+            {{- include "common.env.envs" . | indent 8 }}
+          {{- end }}
+          {{- if .Values.secrets.enabled }}
+          {{- include "common.secrets.secretEnv" $ | indent 10 }}
+          {{- end }}
+          {{- if .Values.application.cm }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "common.names.fullname" . }}
+            {{- if .Values.application.secret }}
+            {{- include "common.env.envSecretVars" . | indent 8 }}
+            {{- end }}
+          {{- end }}
+          {{- if .Values.workingDir }}
+          workingDir: {{- include "common.tplvalues.render" (dict "value" .Values.workingDir "context" $) }}
+          {{- end }}
+          {{- if .Values.diagnosticMode.enabled }}
+          command: {{- include "common.tplvalues.render" (dict "value" .Values.diagnosticMode.command "context" $) | nindent 12 }}
+          {{- else if .Values.command }}
+          command: {{- include "common.tplvalues.render" (dict "value" .Values.command "context" $) | nindent 12 }}
+          {{- end }}
+          {{- if .Values.diagnosticMode.enabled }}
+          args: {{- include "common.tplvalues.render" (dict "value" .Values.diagnosticMode.args "context" $) | nindent 12 }}
+          {{- else if .Values.args }}
+          args: {{- include "common.tplvalues.render" (dict "value" .Values.args "context" $) | nindent 12 }}
+          {{- end }}
+          ports:
+            - containerPort: {{ .Values.service.ports.http }}
+              name: {{ .Values.service.name | default "http" }}
+              protocol: TCP
+            {{- if .Values.monitor.enabled }}
+            - name: http-metrics
+              containerPort: {{ .Values.monitor.port | default "8081" }}
+            {{- end }}
+            {{- if .Values.service.extraPorts }}
+            {{- range $port := .Values.service.extraPorts }}
+            - containerPort: {{ $port.port }}
+              name: {{ $port.name }}
+              protocol: {{ $port.protocol }}
+            {{- end }}
+            {{- end }}
+          {{- if not .Values.diagnosticMode.enabled }}
+          {{- if .Values.probe.enabled }}
+          {{- if .Values.customLivenessProbe }}
+          livenessProbe: {{- include "common.tplvalues.render" (dict "value" .Values.customLivenessProbe "context" $) | nindent 12 }}
+          {{- else if .Values.livenessProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbe.path }}
+              port: http
+          {{- end }}
+          {{- if .Values.customReadinessProbe }}
+          readinessProbe: {{- include "common.tplvalues.render" (dict "value" .Values.customReadinessProbe "context" $) | nindent 12 }}
+          {{- else if .Values.readinessProbe.enabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.readinessProbe.path }}
+              port: http
+          {{- end }}
+          {{- if .Values.customStartupProbe }}
+          startupProbe: {{- include "common.tplvalues.render" (dict "value" .Values.customStartupProbe "context" $) | nindent 12 }}
+          {{- else if .Values.startupProbe.enabled }}
+          startupProbe: {{- include "common.tplvalues.render" (dict "value" (omit (omit .Values.startupProbe "enabled") "path") "context" $) | nindent 12 }}
+            httpGet:
+              path: {{ .Values.startupProbe.path }}
+              port: http
+          {{- end }}
+          {{- end }}
+          {{- end }}
+          {{- if .Values.res.map.enabled }}
+          resources:
+            limits:
+              cpu: {{ pluck $.Values.global.env .Values.resources.limits.cpu | first | default .Values.resources.limits.cpu._default | quote }}
+              memory: {{ pluck $.Values.global.env .Values.resources.limits.memory | first | default .Values.resources.limits.memory._default | quote }}
+            requests:
+              cpu: {{ pluck $.Values.global.env .Values.resources.requests.cpu | first | default .Values.resources.requests.cpu._default | quote }}
+              memory: {{ pluck $.Values.global.env .Values.resources.requests.memory | first | default .Values.resources.requests.memory._default | quote }}
+          {{- end }}
+          {{- if .Values.res.abs.enabled }}
+          resources: {{- toYaml .Values.resources | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+          {{- if .Values.volumeMounts }}
+          {{- include "node-app.volumeMounts" . | indent 10 }}
+          {{- end }}
+          {{- if .Values.emptyDir.enabled }}
+            - name: empty
+              mountPath: {{ .Values.emptyDir.path }}
+          {{- end }}
+          {{- if .Values.configMap.enabled }}
+          {{- range .Values.configMap.files }}
+            - name: {{ .name | replace "." "-" }}
+              mountPath: {{ .mountPath }}
+              subPath: {{ .name }}
+          {{- end }}
+          {{- end }}
+          {{- if .Values.secrets.file.enabled }}
+          {{- include "common.secrets.file.volumeMounts" $ | indent 12 }}
+          {{- end }}

@@ -120,13 +120,13 @@ spec:
           {{- if .Values.secrets.enabled }}
           {{- include "common.secrets.secretEnv" $ | indent 10 }}
           {{- end }}
-          {{- if .Values.application.cm }}
           envFrom:
+          {{- if .Values.application.cm }}
             - configMapRef:
                 name: {{ include "common.names.fullname" . }}
-            {{- if .Values.application.secret }}
-            {{- include "common.env.envSecretVars" . | indent 8 }}
-            {{- end }}
+          {{- end }}
+          {{- if .Values.application.secret }}
+          {{- include "common.env.envSecretVars" . | indent 8 }}
           {{- end }}
           {{- if .Values.workingDir }}
           workingDir: {{- include "common.tplvalues.render" (dict "value" .Values.workingDir "context" $) }}

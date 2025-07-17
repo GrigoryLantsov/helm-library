@@ -32,6 +32,8 @@
 {{- range $key := .Values.volumes.extraVolumes }}
   - name: {{ $key.name }}
     mountPath: {{ $key.mountpath }}
-    subPath: {{ $key.mountPath }}
+    {{- if $key.subPath }}
+    subPath: {{ $key.subPath }}
+    {{- end }}
 {{- end }}
 {{- end }}

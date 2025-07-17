@@ -1,6 +1,6 @@
 dependencies:
 - name: helm-library
-  repository: https://grigorylantsov.github.io/helm-library/
+  repository: file://../helm-library/
   version: 4.0.1
-digest: sha256:91429f5585790fed0c010d38db0221ce0f1de83b27384575c85925dae5226a1d
-generated: "2025-07-17T12:42:30.462631598+03:00"
+digest: sha256:a5ae39c2a73b0df30dcacf89c0f3616d8f77906b8a704f187e09fb1072aa7852
+generated: "2025-07-17T12:51:49.839595016+03:00"

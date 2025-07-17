@@ -97,6 +97,9 @@ spec:
       {{- if .Values.secrets.file.enabled }}
       {{- include "common.secrets.file.volume" $ | indent 8 }}
       {{- end }}
+      {{- if .Values.volumes.extraVolumes }}
+      {{- include "common.volumes.extravolumes" . | indent 8 }}
+      {{- end }}
       {{- if .Values.podSecurityContext.enabled }}
       securityContext: {{- omit .Values.podSecurityContext "enabled" | toYaml | nindent 8 }}
       {{- end }}
@@ -207,4 +210,7 @@ spec:
           {{- end }}
           {{- if .Values.secrets.file.enabled }}
           {{- include "common.secrets.file.volumeMounts" $ | indent 12 }}
+          {{- end }}
+          {{- if .Values.volumes.extraVolumes }}
+          {{- include "common.volumes.extravolumeMounts" . | indent 12 }}
           {{- end }}

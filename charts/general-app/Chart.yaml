@@ -16,4 +16,4 @@ maintainers:
 dependencies:
   - name: helm-library
     version: 4.0.1
-    repository: https://grigorylantsov.github.io/helm-library/
+    repository: file://../helm-library/

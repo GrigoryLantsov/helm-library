@@ -30,8 +30,8 @@
 
 {{- define "common.volumes.extravolumeMounts" }}
 {{- range $key := .Values.volumes.extraVolumes }}
-  - name: $key.name
-    mountPath: $key.mountpath
-    subPath: $key.mountPath
+  - name: {{ $key.name }}
+    mountPath: {{ $key.mountpath }}
+    subPath: {{ $key.mountPath }}
 {{- end }}
 {{- end }}
